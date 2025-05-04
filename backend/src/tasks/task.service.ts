@@ -57,4 +57,12 @@ export class TaskService {
     return task;
   }
 
+  async update(id: string, dto: UpdateTaskDto) {
+    const task = await this.taskRepo.findOne({ where: { id } });
+    if (!task) throw new NotFoundException('Task not found');
+    Object.assign(task, dto);
+    await this.taskRepo.save(task);
+    return `task with id ${id} updated`;
+  }
+
 }
