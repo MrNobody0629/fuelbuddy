@@ -7,7 +7,6 @@ import { ShareTaskDto } from './dto/share-task.dto';
 import { Task } from './entity/task.entity';
 import { User } from 'src/users/entity/user.entity';
 import { TaskAssignment } from './entity/task-assignment.entity';
-import { AssignTaskDto } from './dto/assign-task.dto';
 
 @Injectable()
 export class TaskService {
@@ -75,4 +74,23 @@ export class TaskService {
     return `task with id ${id} deleted`;
   }
 
+  async share(req: Request, dto: ShareTaskDto) {
+    const owner_id = req?.['user']?.id;
+    const [task, user] = await Promise.all([
+      this.taskRepo.findOne({ where: { id: dto.taskId } }),
+      this.userRepo.findOne({ where: { email: dto.email } }),
+    ]);
+    if (!task) throw new NotFoundException('Task not found');
+    if (!user) throw new NotFoundException('User not found, Check email id');
+    task.assigned_to = user.id;
+    await Promise.all([
+      this.taskRepo.save(task),
+      this.assignmentRepo.save({
+        task_id: task.id,
+        user_id: user.id,
+        assigned_by: owner_id,
+      }),
+    ]);
+    return `task with id ${dto.taskId} shared with user ${user.email}`;
+  }
 }

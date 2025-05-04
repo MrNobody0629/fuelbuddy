@@ -43,4 +43,8 @@ export class TaskController {
     return this.taskService.remove(req, id);
   }
 
+  @Post('share')
+  share(@Req() req: Request, @Body() dto: ShareTaskDto) {
+    return this.taskService.share(req, dto);
+  }
 }
