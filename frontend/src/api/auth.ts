@@ -21,3 +21,10 @@ export const signupWithFirebase = async (token: string) => {
   }
 };
 
+export const get = async (path: string) => {
+  return apiClient.get(path);
+};
+
+export const post = async (path: string, body = {}) => {
+  return apiClient.post(path, body);
+};
