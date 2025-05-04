@@ -82,6 +82,7 @@ export class TaskService {
     ]);
     if (!task) throw new NotFoundException('Task not found');
     if (!user) throw new NotFoundException('User not found, Check email id');
+    if (task?.assigned_to === user?.id) throw new NotFoundException('Task already shared with this user');
     task.assigned_to = user.id;
     await Promise.all([
       this.taskRepo.save(task),
@@ -91,6 +92,6 @@ export class TaskService {
         assigned_by: owner_id,
       }),
     ]);
-    return `task with id ${dto.taskId} shared with user ${user.email}`;
+    return `task ${task?.title} shared with user ${user.email}`;
   }
 }
