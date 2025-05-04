@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { SignupDto } from './dto/signup.dto';
+import { LoginDto } from './dto/login.dto';
 import { User } from 'src/users/entity/user.entity';
 @Injectable()
 export class AuthService {
@@ -24,4 +25,23 @@ export class AuthService {
     return this.signToken(user.id, user.email);
   }
 
+  async login(dto: LoginDto) {
+    const user = await this.userRepo.findOne({ where: { email: dto.email } });
+    if (!user || !(await bcrypt.compare(dto.password, user.password))) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    return this.signToken(user.id, user.email);
+  }
+
+  private signToken(userId: string, email: string) {
+    return {
+      access_token: this.jwtService.sign(
+        { userId, email },
+        {
+          secret: process.env.JWT_SECRET,
+          expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+        },
+      ),
+    };
+  }
 }
