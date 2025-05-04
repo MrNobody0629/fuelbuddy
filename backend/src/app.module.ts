@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { MiddlewareModule } from './common/middleware/middleware.module';
+import { JwtAuthMiddleware } from './common/middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -19,10 +21,17 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: process.env?.ENV === 'dev',
     }),
+    MiddlewareModule,
     AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
+  constructor(private readonly jwtAuthMiddleware: JwtAuthMiddleware) {}
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(this.jwtAuthMiddleware.use.bind(this.jwtAuthMiddleware))
+      .forRoutes('*');
+  }
 }
