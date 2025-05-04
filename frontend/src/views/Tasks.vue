@@ -63,8 +63,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useTaskStore } from '../stores/task.ts';
-import { useToast } from 'vue-toastification';
-const toast = useToast();
 
 const tasks = useTaskStore();
 const shareEmail = ref('');
