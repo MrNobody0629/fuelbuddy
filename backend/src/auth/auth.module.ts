@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from 'src/users/entity/user.entity';
+import { FirebaseAdminService } from 'src/firebase/firebase.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -15,6 +16,6 @@ import { User } from 'src/users/entity/user.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, FirebaseAdminService],
 })
 export class AuthModule {}
