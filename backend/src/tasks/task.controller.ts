@@ -28,4 +28,9 @@ export class TaskController {
     return this.taskService.findAll(req, type);
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.taskService.findOne(id);
+  }
+
 }
