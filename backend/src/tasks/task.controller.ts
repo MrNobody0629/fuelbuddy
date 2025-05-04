@@ -23,4 +23,9 @@ export class TaskController {
     return this.taskService.create(req, dto);
   }
 
+  @Get()
+  findAll(@Req() req: Request, @Query('type') type: string) {
+    return this.taskService.findAll(req, type);
+  }
+
 }

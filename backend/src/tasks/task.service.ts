@@ -36,4 +36,19 @@ export class TaskService {
     return `task created with id ${task.id}`;
   }
 
+  async findAll(req: Request, type: string) {
+    let where = {};
+    if (type === 'all') {
+      where = [
+        { owner_id: req?.['user']?.id },
+        { assigned_to: req?.['user']?.id },
+      ];
+    } else if (type === 'mine') {
+      where['owner_id'] = req?.['user']?.id;
+    } else if (type === 'shared') {
+      where['assigned_to'] = req?.['user']?.id;
+    }
+    return this.taskRepo.find({ where });
+  }
+
 }
