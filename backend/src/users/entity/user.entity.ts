@@ -28,4 +28,9 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @OneToMany(() => Task, (task) => task.owner)
+  tasks: Task[];
+
+  @OneToMany(() => Task, (task) => task.assignee)
+  assignedTasks: Task[];
 }
