@@ -65,4 +65,14 @@ export class TaskService {
     return `task with id ${id} updated`;
   }
 
+  async remove(req: Request, id: string) {
+    const task = await this.taskRepo.findOne({
+      where: { id, owner_id: req?.['user']?.id },
+    });
+    if (!task)
+      throw new NotFoundException('Task not found or does not belong to you');
+    await this.taskRepo.remove(task);
+    return `task with id ${id} deleted`;
+  }
+
 }

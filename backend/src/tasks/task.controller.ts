@@ -38,4 +38,9 @@ export class TaskController {
     return this.taskService.update(id, dto);
   }
 
+  @Delete(':id')
+  remove(@Req() req: Request, @Param('id') id: string) {
+    return this.taskService.remove(req, id);
+  }
+
 }
