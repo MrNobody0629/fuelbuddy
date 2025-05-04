@@ -24,6 +24,10 @@ export const useTaskStore = defineStore('task', {
     },
   },
   actions: {
+    async fetchTasks(filter: 'all' | 'mine' | 'shared') {
+      const res = await get(`/tasks?type=${filter}`);
+      this.tasks = res.data;
+    },
     },
   },
 });
