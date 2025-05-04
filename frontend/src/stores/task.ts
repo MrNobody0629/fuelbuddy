@@ -28,6 +28,15 @@ export const useTaskStore = defineStore('task', {
       const res = await get(`/tasks?type=${filter}`);
       this.tasks = res.data;
     },
+    async shareTask(taskId: string, email: string, closePopup: Function) {
+      await post(`/tasks/share`, { email, taskId })
+      .then((resp) => {
+        toast.success(resp?.data || "Task shared successfully");
+        closePopup();
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message || "Error sharing task");
+      });
     },
   },
 });
