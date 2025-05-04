@@ -17,4 +17,8 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
+  @Post('firebase-signup')
+  async firebaseSignup(@Req() req: Request) {
+    return this.authService.firebaseSignup(req);
+  }
 }
