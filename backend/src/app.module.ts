@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { TasksModule } from './tasks/tasks.module';
 import { MiddlewareModule } from './common/middleware/middleware.module';
 import { JwtAuthMiddleware } from './common/middleware/auth.middleware';
 
@@ -23,6 +25,8 @@ import { JwtAuthMiddleware } from './common/middleware/auth.middleware';
     }),
     MiddlewareModule,
     AuthModule,
+    UsersModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,26 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  Req,
+  Query,
+} from '@nestjs/common';
+import { TaskService } from './task.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { ShareTaskDto } from './dto/share-task.dto';
+
+@Controller('tasks')
+export class TaskController {
+  constructor(private taskService: TaskService) {}
+
+  @Post()
+  create(@Req() req: Request, @Body() dto: CreateTaskDto) {
+    return this.taskService.create(req, dto);
+  }
+
+}
